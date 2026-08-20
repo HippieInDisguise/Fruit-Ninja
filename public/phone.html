@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#0E1D24">
+<title>Phone controller</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/app.css">
+</head>
+
+<!--
+  This file is yours. Restyle it, rewrite the words, translate it, move things
+  around, delete whole sections. All the behaviour lives in /phone.js, and it
+  finds what it needs through the data-vsn="..." attributes below — never through
+  a class name, an id, or the order things appear in. Change how it looks freely;
+  keep the data-vsn attributes on something and it keeps working.
+
+    code      gets the room code            gate    hidden once sensors start
+    start     asks for motion permission    live    shown once sensors start
+    warn      where problems are written    zero    recalibrate
+    strips    live meters go here           controls  touch controls go here
+    status    connecting / linked           dot     turns green or red
+    rate      packets per second
+
+  Every one is optional. Drop `strips` and you simply lose the meters. Drop
+  `start`, `zero` or `controls` and phone.js puts a plain one back, because the
+  phone cannot be used without them. The "someone else is playing" screen is not
+  here at all — phone.js injects it, so it can never be edited away.
+-->
+
+<body class="handheld">
+
+<div class="stage">
+
+  <div class="gate" data-vsn="gate">
+    <div>
+      <p class="eyebrow">Room</p>
+      <div class="bigcode" data-vsn="code">····</div>
+    </div>
+    <h1>Turn this phone<br>into a controller</h1>
+    <p>Your browser will ask for permission to read movement. Say yes, or nothing will work.</p>
+    <div data-vsn="warn"></div>
+    <button data-vsn="start">Turn on sensors</button>
+  </div>
+
+  <div hidden data-vsn="live" style="display:flex;flex-direction:column;gap:14px;flex:1">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+      <div>
+        <p class="eyebrow">Room</p>
+        <div class="bigcode" data-vsn="code">····</div>
+      </div>
+      <div class="pips" style="flex-direction:column;align-items:flex-end;gap:4px">
+        <span class="pip"><span class="dot" data-vsn="dot"></span> <span data-vsn="status">connecting</span></span>
+        <span class="pip">sending <b data-vsn="rate">—</b></span>
+      </div>
+    </div>
+
+    <p style="margin:0;font-size:12.5px;color:#97AAB1">
+      Hold the phone the way you want to play, then tap <b>Set centre</b>. Everything is
+      measured from there.
+    </p>
+
+    <section class="panel" style="flex:none">
+      <header><h2>What the game is getting</h2></header>
+      <div class="strips" data-vsn="strips"></div>
+    </section>
+
+    <div class="controls" data-vsn="controls"></div>
+
+    <!-- Sticky: a phone that drifts is recalibrated mid-game, not by scrolling
+         back up to find the button. -->
+    <div class="zerobar"><button data-vsn="zero">Set centre</button></div>
+  </div>
+
+</div>
+
+<script src="/spec.js"></script>
+<script src="/sensors.js"></script>
+<script src="/phone.js"></script>
+</body>
+</html>

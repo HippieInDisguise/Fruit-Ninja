@@ -1,0 +1,45 @@
+{
+  "v": 1,
+  "rate": 30,
+  "actions": [
+    {
+      "id": "a5qjg5n",
+      "name": "steer",
+      "source": "tiltLR",
+      "kind": "range",
+      "invert": false,
+      "out": "signed",
+      "threshold": 50,
+      "cooldown": 0,
+      "deadzone": 5,
+      "smooth": 0.25,
+      "gain": 1.3
+    },
+    {
+      "id": "amrz7nk",
+      "name": "lean",
+      "source": "tiltFB",
+      "kind": "range",
+      "invert": false,
+      "out": "signed",
+      "threshold": 50,
+      "cooldown": 0,
+      "deadzone": 5,
+      "smooth": 0.25,
+      "gain": 1.3
+    },
+    {
+      "id": "akcefyw",
+      "name": "button",
+      "source": "touchHold",
+      "kind": "switch",
+      "invert": false,
+      "out": "signed",
+      "threshold": 50,
+      "cooldown": 0,
+      "deadzone": 0,
+      "smooth": 0.2,
+      "gain": 1
+    }
+  ]
+}

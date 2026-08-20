@@ -1,0 +1,287 @@
+/* Vibe-Sensor Node — a workbench, not a website.
+   Pale instrument panel, ink lettering, one colour per channel borrowed from
+   resistor bands so a strip can be named by its colour across the room. */
+
+:root {
+  --paper:   #E4EAEA;
+  --card:    #F5F8F7;
+  --sunk:    #D5DEDE;
+  --ink:     #0E1D24;
+  --dim:     #596D75;
+  --faint:   #8A9AA0;
+  --rule:    #C3CECF;
+  --hair:    #DBE3E3;
+
+  --c1: #B93A2C;  --c2: #BF7118;  --c3: #8C7A0E;
+  --c4: #22754A;  --c5: #23569F;  --c6: #5B41A6;
+
+  --live:  #22754A;
+  --stop:  #B93A2C;
+  --focus: #23569F;
+
+  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --disp: "Bricolage Grotesque", "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --r: 3px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+}
+
+h1, h2, h3 { font-family: var(--disp); font-weight: 700; margin: 0; letter-spacing: -0.02em; }
+h1 { font-size: 30px; line-height: 1.05; }
+h2 { font-size: 15px; }
+
+a { color: var(--focus); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* ---- shell ---- */
+
+.wrap { max-width: 1180px; margin: 0 auto; padding: 26px 22px 90px; }
+
+.masthead {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 20px; flex-wrap: wrap;
+  padding-bottom: 14px; margin-bottom: 22px;
+  border-bottom: 2px solid var(--ink);
+}
+.masthead p { margin: 6px 0 0; color: var(--dim); max-width: 46ch; font-size: 13px; }
+
+.eyebrow {
+  font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--faint); margin: 0 0 4px;
+}
+
+.cols { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 22px; align-items: start; }
+
+.panel {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: var(--r);
+}
+.panel > header {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 11px 14px; border-bottom: 1px solid var(--hair);
+}
+.panel > header h2 { font-size: 13px; }
+.panel .body { padding: 14px; }
+.panel + .panel { margin-top: 18px; }
+
+/* ---- controls ---- */
+
+button, .btn {
+  font: inherit; font-size: 12px;
+  padding: 7px 12px;
+  border: 1px solid var(--ink);
+  border-radius: var(--r);
+  background: var(--ink); color: var(--card);
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 7px;
+  text-decoration: none;
+}
+button.ghost, .btn.ghost { background: transparent; color: var(--ink); border-color: var(--rule); }
+button.ghost:hover, .btn.ghost:hover { border-color: var(--ink); }
+button:disabled { opacity: 0.4; cursor: not-allowed; }
+button.tiny { padding: 3px 7px; font-size: 11px; }
+
+input, select, textarea {
+  font: inherit; font-size: 13px;
+  padding: 6px 8px;
+  background: var(--card);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: var(--r);
+  min-width: 0;
+}
+input[type="range"] { padding: 0; accent-color: var(--ink); border: 0; background: none; }
+label { font-size: 11px; color: var(--dim); display: block; }
+
+.field { display: flex; flex-direction: column; gap: 3px; }
+
+/* ---- the room plate ---- */
+
+.plate { display: flex; gap: 18px; align-items: center; }
+.plate .code {
+  font-family: var(--disp); font-weight: 700;
+  font-size: 46px; line-height: 1; letter-spacing: 0.06em;
+}
+.plate .qr { width: 108px; height: 108px; flex: none; background: #fff; padding: 5px; border: 1px solid var(--rule); }
+.plate .qr svg { display: block; width: 100%; height: 100%; }
+.linkline {
+  font-size: 12px; color: var(--dim); word-break: break-all;
+  margin-top: 6px;
+}
+
+/* ---- channel strips: the thing you actually look at ---- */
+
+.strips { display: flex; flex-direction: column; }
+.strip {
+  display: grid;
+  grid-template-columns: 26px minmax(120px, 1.1fr) minmax(130px, 1fr) 104px minmax(150px, 1.5fr) 28px;
+  gap: 10px; align-items: center;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--hair);
+  border-left: 4px solid var(--chan, var(--rule));
+}
+.strip:last-child { border-bottom: 0; }
+.strip .n { font-size: 11px; color: var(--faint); }
+.strip .nm { font-weight: 600; }
+.strip .drop { display: flex; flex-direction: column; gap: 3px; }
+
+.meter {
+  position: relative;
+  height: 26px;
+  background: var(--sunk);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.meter .zero { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--faint); opacity: 0.6; }
+.meter .fill {
+  position: absolute; top: 0; bottom: 0;
+  background: var(--chan, var(--ink));
+  will-change: transform, width;
+}
+.meter .num {
+  position: absolute; right: 5px; top: 50%; transform: translateY(-50%);
+  font-size: 11px; font-variant-numeric: tabular-nums; color: var(--ink);
+  background: rgba(245, 248, 247, 0.75); padding: 0 3px; border-radius: 2px;
+}
+.meter.pulse { animation: pop 220ms ease-out; }
+@keyframes pop { from { box-shadow: inset 0 0 0 2px var(--chan); } to { box-shadow: inset 0 0 0 0 transparent; } }
+
+.tune {
+  grid-column: 1 / -1;
+  display: none; gap: 14px; flex-wrap: wrap;
+  padding: 10px 0 3px; margin-top: 8px;
+  border-top: 1px dashed var(--rule);
+}
+.strip.open .tune { display: flex; }
+.tune .field { min-width: 108px; }
+.tune output { font-size: 11px; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+/* ---- status ---- */
+
+.pips { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; }
+.pip { display: flex; align-items: center; gap: 6px; color: var(--dim); }
+.pip b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--faint); flex: none; }
+.dot.on { background: var(--live); }
+.dot.off { background: var(--stop); }
+
+.note {
+  font-size: 12px; color: var(--dim);
+  border-left: 2px solid var(--rule); padding-left: 10px; margin: 12px 0 0;
+}
+.note strong { color: var(--ink); }
+
+/* ---- handout ---- */
+
+textarea.spec {
+  width: 100%; height: 340px; resize: vertical;
+  font-size: 11.5px; line-height: 1.55;
+  background: var(--sunk); border-color: var(--rule);
+  white-space: pre; overflow-wrap: normal; overflow-x: auto;
+}
+
+/* ---- phone: same instrument, inverted ---- */
+
+body.handheld {
+  background: var(--ink); color: var(--paper);
+  /* touch-action lives on .ctl, not here — on the body it also kills scrolling. */
+  overscroll-behavior: none;
+  user-select: none; -webkit-user-select: none;
+  min-height: 100dvh;
+}
+body.handheld .panel { background: #16282F; border-color: #2C4048; }
+body.handheld .panel > header { border-color: #2C4048; }
+body.handheld .meter { background: #0A171C; }
+body.handheld .meter .num { color: var(--paper); background: rgba(14, 29, 36, 0.7); }
+body.handheld .strip { border-color: #2C4048; }
+body.handheld .n, body.handheld label { color: #7E939B; }
+body.handheld button { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+body.handheld button.ghost { background: transparent; color: var(--paper); border-color: #3C555E; }
+
+.stage { padding: 16px; display: flex; flex-direction: column; gap: 14px; min-height: 100dvh; }
+
+.bigcode {
+  font-family: var(--disp); font-weight: 700;
+  font-size: 40px; letter-spacing: 0.08em; line-height: 1;
+}
+
+.gate { display: flex; flex-direction: column; gap: 16px; justify-content: center; flex: 1; text-align: left; }
+.gate h1 { font-size: 34px; }
+.gate p { color: #97AAB1; margin: 0; font-size: 14px; }
+.gate button { justify-content: center; font-size: 17px; padding: 20px; }
+
+/* On-screen controls, built from the config. A room with no touch actions
+   renders none of this and the screen stays clean. */
+.controls { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+
+.ctl {
+  touch-action: none;            /* the one place it belongs: no scroll mid-drag */
+  border: 1px dashed #3C555E; border-radius: var(--r);
+  display: flex; align-items: center; justify-content: center;
+  color: #6E858D; text-align: center; padding: 12px;
+  font-size: 12px;
+}
+.ctl.lit { border-style: solid; border-color: var(--paper); color: var(--paper); }
+
+.pad { flex: 1; min-height: 130px; }
+.pad.wide { flex: none; min-height: 76px; }   /* left/right only */
+
+.ctl.hold {
+  flex: none; min-height: 86px;
+  font-family: var(--disp); font-weight: 700; font-size: 22px;
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.ctl.hold.lit { background: var(--paper); color: var(--ink); }
+
+/* Recalibrate stays reachable however far the page has scrolled, and clears the
+   home-bar on phones with a gesture area. */
+.zerobar {
+  position: sticky; bottom: 0; z-index: 5;
+  margin: 0 -16px -16px; padding: 10px 16px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom));
+  background: linear-gradient(to top, var(--ink) 62%, rgba(14, 29, 36, 0));
+}
+.zerobar button { width: 100%; justify-content: center; font-size: 15px; padding: 14px; }
+
+.alert {
+  border: 1px solid var(--stop); border-left-width: 4px;
+  padding: 10px 12px; border-radius: var(--r); font-size: 13px;
+}
+
+/* Turned away, or handed on after sitting still. Covers everything, because a
+   live meter behind the message reads as though it is still connected. */
+.halt {
+  position: fixed; inset: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: center;
+  padding: 28px; background: var(--ink);
+}
+.halt[hidden] { display: none; }
+.halt h1 { font-size: 28px; margin: 0 0 10px; }
+.halt p { color: #97AAB1; margin: 0 0 22px; font-size: 14px; }
+.halt button { width: 100%; justify-content: center; font-size: 17px; padding: 18px; }
+
+@media (max-width: 900px) {
+  .cols { grid-template-columns: 1fr; }
+  .strip { grid-template-columns: 22px 1fr 1fr; row-gap: 8px; }
+  .strip .meter { grid-column: 1 / -1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
